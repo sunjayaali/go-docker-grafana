@@ -21,12 +21,14 @@ func main() {
 		weightedrand.NewChoice(slog.LevelError, 2),
 	))
 
-	for range time.NewTicker(500 * time.Millisecond).C {
-		level := chooser.Pick()
-		logger.Info("",
-			slog.String("level", level.String()),
-			slog.String("level2", level.String()),
-		)
-	}
+	go func() {
+		for range time.NewTicker(500 * time.Millisecond).C {
+			level := chooser.Pick()
+			logger.Info("",
+				slog.String("level", level.String()),
+				slog.String("level2", level.String()),
+			)
+		}
+	}()
 	http.ListenAndServe(":8080", nil)
 }
