@@ -16,6 +16,7 @@ services:
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./.data/grafana:/var/lib/grafana
 
   loki:
     image: grafana/loki:3.5.11
@@ -36,3 +37,9 @@ services:
       - ./alloy/config.alloy:/etc/alloy/config.alloy
       - /var/run/docker.sock:/var/run/docker.sock
     command: run --server.http.listen-addr=0.0.0.0:12345 /etc/alloy/config.alloy
+
+  prometheus:
+    image: prom/prometheus:latest
+    platform: linux/amd64
+    ports:
+      - "9090:9090"

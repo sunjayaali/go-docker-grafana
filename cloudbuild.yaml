@@ -1,0 +1,21 @@
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    waitFor: ["-"]
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        set -e
+
+        IMAGE="asia-docker.pkg.dev/${PROJECT_ID}/learning/go-grafana"
+        docker build \
+          -t $${IMAGE}:${SHORT_SHA} \
+          -t $${IMAGE}:latest \
+          .
+
+images:
+  - asia-docker.pkg.dev/${PROJECT_ID}/learning/go-grafana:${SHORT_SHA}
+  - asia-docker.pkg.dev/${PROJECT_ID}/learning/go-grafana:latest
