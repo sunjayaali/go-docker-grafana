@@ -16,7 +16,7 @@ services:
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning
-      - ./.data/grafana:/var/lib/grafana
+      - ./data/grafana:/var/lib/grafana
 
   loki:
     image: grafana/loki:3.5.11
@@ -43,3 +43,15 @@ services:
     platform: linux/amd64
     ports:
       - "9090:9090"
+
+  datadog:
+    build: datadog
+    platform: linux/amd64
+    environment:
+      - DD_API_KEY=${DD_API_KEY}
+      - DD_SITE=datadoghq.com
+      - DD_LOGS_ENABLED=true
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+      - DD_CONTAINER_EXCLUDE_LOGS="name:datadog-agent"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
